@@ -1,0 +1,136 @@
+%{
+#include <string.h>
+#include "y.tab.h"
+
+#include "as.h"
+
+extern void yyerror(char*);
+char* yystrtok(const char* p1);
+
+%}
+
+%%
+
+";".*         { /* COMMENT */ }
+
+"native"      { return NATIVE; }
+"export"      { return EXPORT; }
+
+"db"          { return DB; }
+
+"resb"        { return RESB; }
+
+"push"        { return PUSH; }
+"discard"     { return DISCARD; }
+"discardx"    { return DISCARDX; }
+"dup"         { return DUP; }
+"swap"        { return SWAP; }
+
+"load1"       { return LOAD1; }
+"load2"       { return LOAD2; }
+"load4"       { return LOAD4; }
+"save1"       { return SAVE1; }
+"save2"       { return SAVE2; }
+"save4"       { return SAVE4; }
+"param"       { return PARAM; }
+"local"       { return LOCAL; }
+"book"        { return BOOK; }
+"free"        { return FREE; }
+"loadparam"   { return LOADPARAM; }
+"saveparam"   { return SAVEPARAM; }
+"loadlocal"   { return LOADLOCAL; }
+"savelocal"   { return SAVELOCAL; }
+
+"add"         { return ADD; }
+"sub"         { return SUB; }
+"mul"         { return MUL; }
+"div"         { return DIV; }
+"mod"         { return MOD; }
+"inc"         { return INC; }
+"dec"         { return DEC; }
+
+"incparam"    { return INCPARAM; }
+"decparam"    { return DECPARAM; }
+
+"inclocal"    { return INCLOCAL; }
+"declocal"    { return DECLOCAL; }
+
+"not"         { return NOT; }
+"neg"         { return NEG; }
+"and"         { return AND; }
+"or"          { return OR; }
+"xor"         { return XOR; }
+"shl"         { return SHL; }
+"shr"         { return SHR; }
+
+"jz"          { return JZ; }
+"jnz"         { return JNZ; }
+"je"          { return JE; }
+"jne"         { return JNE; }
+"jl"          { return JL; }
+"jle"         { return JLE; }
+"jg"          { return JG; }
+"jge"         { return JGE; }
+
+"jump"        { return JUMP; }
+"call"        { return CALL; }
+"ret"         { return RET; }
+
+\"(\\.|[^"])*\" { yylval.pstr = yystrtok(yytext); return STR; }
+
+[a-zA-Z_][a-zA-Z0-9_]* { if (CONST_MAX_NAME_LEN <= yyleng) yyerror("token length too long"); strcpy(yylval.str, yytext); return ID; }
+
+0[xX][a-fA-F0-9]+ { sscanf(yytext, "%x", &yylval.val); return NUM; }
+-?[0-9]+      { yylval.val = atoi(yytext); return NUM; }
+
+'\\n'         { yylval.val = '\n'; return NUM; }
+'\\t'         { yylval.val = '\t'; return NUM; }
+'\\0'         { yylval.val = '\0'; return NUM; }
+'\\b'         { yylval.val = '\b'; return NUM; }
+'\\f'         { yylval.val = '\b'; return NUM; }
+'\\r'         { yylval.val = '\r'; return NUM; }
+'\\a'         { yylval.val = '\a'; return NUM; }
+'.'           { yylval.val = yytext[1]; return NUM; }
+
+[ \t\r]       ;
+[\n]          { return '\n'; }
+"."           { return '.'; }
+":"           { return ':'; }
+","           { return ','; }
+.             { yyerror("invalid character"); }
+
+%%
+
+int yywrap()
+{
+  return 1;
+}
+
+char* yystrtok(const char* p1)
+{
+  static char buff[512];
+  char *p = buff;
+  while (*p1) {
+    if (*p1 == '\\') {
+      p1++;
+      switch (*p1)
+      {
+      case '\\': *p++ = '\\'; p1++; break;
+      case '\'': *p++ = '\''; p1++; break;
+      case '"': *p++ = '"'; p1++; break;
+      case 'n': *p++ = '\n'; p1++; break;
+      case 't': *p++ = '\t'; p1++; break;
+      case '0': *p++ = '\0'; p1++; break;
+      case 'b': case 'f': *p++ = '\b'; p1++; break;
+      case 'r': *p++ = '\r'; p1++; break;
+      case 'a': *p++ = '\a'; p1++; break;
+      }
+    } else {
+      *p++ = *p1++;
+    }
+  }
+
+  *p = '\0';
+
+  return buff;
+}
