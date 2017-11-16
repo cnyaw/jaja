@@ -4,8 +4,7 @@
 // 2009/08/14 Waync Cheng
 //
 
-#ifndef JAJA_VM_IMPL
-#define JAJA_VM_IMPL
+#pragma once
 
 #include <stdio.h>
 #include <string.h>
@@ -84,7 +83,5 @@ public:
   int sp;                                       // Stack pointer.
   int xp;                                       // Internal stack pointer, call/param/local.
 };
-
-#endif // JAJA_VM_IMPL
 
 // end of vm.hxx

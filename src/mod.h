@@ -4,8 +4,7 @@
 // 2009/08/14 Waync Cheng
 //
 
-#ifndef JAJA_MOD
-#define JAJA_MOD
+#pragma once
 
 // header
 #define VER_MAJOR 0x00
@@ -52,7 +51,5 @@ enum TAG_
 // TAG_CODE
 //      len(2)
 //      code(len)   = byte code(len)
-
-#endif // JAJA_MOD
 
 // end of mod.h

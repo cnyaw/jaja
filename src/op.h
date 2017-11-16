@@ -4,8 +4,7 @@
 // 2009/08/14 Waync Cheng
 //
 
-#ifndef JAJA_OP
-#define JAJA_OP
+#pragma once
 
 #define TAG_NATIVE 0xffff
 
@@ -72,7 +71,5 @@ enum JAJA_OPCODE_
   OP_CALLMOD,
   OP_RET,
 };
-
-#endif // JAJA_OP
 
 // end of op.h

@@ -4,8 +4,7 @@
 // 2009/08/14 Waync Cheng
 //
 
-#ifndef JAJA_AS
-#define JAJA_AS
+#pragma once
 
 #include <stdio.h>
 #include <string.h>
@@ -20,7 +19,5 @@ void addNode(int op, const char* id, const char* id2);
 void initAssemble();
 void processAssemble();
 void uninitAssemble();
-
-#endif // JAJA_AS
 
 // end of as.h

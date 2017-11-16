@@ -4,8 +4,7 @@
 // 2009/08/14 Waync Cheng
 //
 
-#ifndef JAJA_VM
-#define JAJA_VM
+#pragma once
 
 #include <string>
 
@@ -25,7 +24,5 @@ protected:
 
   jajaVM();
 };
-
-#endif // JAJA_VM
 
 // end of vm.h
