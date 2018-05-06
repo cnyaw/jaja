@@ -17,25 +17,19 @@
 msg1:         DB "hello world! ", 0
               RESB 16
 var:          RESB 32
+tmpstr:       RESB 32
 
 test_strcpy:
 
-  ; reserve 32 bytes local variable
-
-  push        8
-  book
-
-  ; string copy msg1 -> local[0]
+  ; string copy msg1 -> tmpstr
 
   push        msg1
-  push        0
-  local
+  push        tmpstr
   call        string.strcpy
 
-  ; string copy local[0] -> var
+  ; string copy tmpstr -> var
 
-  push        0
-  local
+  push        tmpstr
   push        var
   call        string.strcpy
 
@@ -49,11 +43,6 @@ test_strcpy:
 
   push        var
   call        system.outstr
-
-  ; free 32 bytes local variable
-
-  push        8
-  free
 
   ret
 

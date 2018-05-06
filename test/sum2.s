@@ -4,41 +4,37 @@
 ; 2012/02/22 Waync Cheng
 ;
 
-  push        2
-  book
+  jump        init0
 
-  push        10
-  push        0
-  savelocal
-
-  push        0
-  push        1
-  savelocal
+i:            db 10
+sum:          db 0
 
 init0:
-  push        0
-  loadlocal
+  push        i                         ; 0 == i?
+  load1
   jz          done
-  push        0
-  loadlocal
-  push        1
-  loadlocal
+
+  push        sum                       ; sum += i
+  load1
+  push        i
+  load1
   add
-  push        1
-  savelocal
-  push        0
-  declocal
+  push        sum
+  save1
+
+  push        i                         ; i -= 1
+  load1
+  dec
+  push        i
+  save1
+
   jump        init0
 
 done:
-  push        1
-  loadlocal
-
+  push        sum
+  load1
   push        msg
   call        stdio.printf
-
-  push        2
-  free
 
   ret
 

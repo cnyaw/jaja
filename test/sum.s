@@ -10,125 +10,114 @@
 
 main:
 
+  push        a
   push        10
-  book
+  call        inita
 
-  push        0
-  local
+  push        a
   push        10
-  call        init
-
-  push        0
-  local
-  push        10
-  call        sum
+  call        suma
 
   push        msg
   call        stdio.printf
 
-  push        10
-  free
   ret
 
-msg:  db    "calc sum of 1 + 2 + .. + 10 = %d\n", 0
+msg:          db "calc sum of 1 + 2 + .. + 10 = %d\n", 0
+a:            RESB 10
+i:            RESB 1
+sum:          RESB 1
 
 ;
 ; void init(n, a)
 ;   var i
 ;
 
-init:
-
-  push        1
-  book
+inita:
 
   push        0         ; i = 0
-  dup
-  savelocal
+  push        i
+  save1
 
 init0:
 
-  push        0
-  loadlocal             ; i + 1
-  inc
+  push        i
+  load1
+  inc                   ; i + 1
 
-  push        0
-  loadlocal             ; i
+  push        i
+  load1                 ; i
   push        1
   loadparam             ; a
 
   add                   ; a + i
-  save4                 ; addr[a + i] = a[i] = i + 1
+  save1                 ; addr[a + i] = a[i] = i + 1
 
-  push        0
-  inclocal              ; i ++
+  push        i
+  load1
+  inc
+  push        i
+  save1                 ; i ++
 
-  push        0
-  loadlocal             ; i
+  push        i
+  load1                 ; i
   push        0
   loadparam             ; n
 
   jne         init0     ; i == n ?
 
-  push        3
-  free                  ; release a, n, i
-
   ret
 
 ;
-; int sum(n, a)
+; int suma(n, a)
 ;   var sum
 ;   var i
 ;
 
-sum:
-
-  push        2
-  book
+suma:
 
   push        0         ; i = 0
-  push        1
-  savelocal
+  push        i
+  save1
 
   push        0         ; sum = 0
-  push        0
-  savelocal
+  push        sum
+  save1
 
 sum0:
 
   push        1
   loadparam             ; a
-  push        1
-  loadlocal             ; i
+
+  push        i
+  load1
 
   add                   ; a[i]
-  load4
+  load1
 
-  push        0
-  loadlocal             ; sum
+  push        sum
+  load1
 
   add                   ; sum + a[i]
 
-  push        0
-  savelocal             ; sum = sum + a[i]
+  push        sum
+  save1                 ; sum = sum + a[i]
 
-  push        1
-  inclocal              ; i ++
+  push        i
+  load1
+  inc
+  push        i
+  save1                 ; i ++
 
-  push        1
-  loadlocal             ; i
+  push        i
+  load1
+
   push        0
   loadparam             ; n
 
   jne         sum0      ; i == n ?
 
-  push        0
-  loadlocal             ; sum
-
-  push        1
-  saveparam             ; ret = sum
-
-  push        3
-  free                  ; free n, i, sum
+  push        sum
+  load1
 
   ret
