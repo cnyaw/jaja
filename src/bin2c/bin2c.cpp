@@ -14,7 +14,7 @@ int main(int argc, char **argv)
   printf("jaja bin2c (alpha), 2009 Waync Cheng.\n");
 
   if (3 != argc) {
-    printf("Uasage: bin2c ModName outName\n");
+    printf("Usage: bin2c ModName outName\n");
     return 1;
   }
 
@@ -32,7 +32,10 @@ int main(int argc, char **argv)
   }
 
   std::string mod = argv[1];
-  mod = mod.substr(0, mod.rfind(".", mod.size(), 1));
+  mod.erase(std::remove(mod.begin(), mod.end(), '('), mod.end());
+  mod.erase(std::remove(mod.begin(), mod.end(), ')'), mod.end());
+  std::replace(mod.begin(), mod.end(), '.', '_');
+  std::replace(mod.begin(), mod.end(), ' ', '_');
   std::string::size_type idx = mod.rfind("/", mod.size(), 1);
   if (0 != idx) {
     idx++;
