@@ -54,7 +54,7 @@ void initNativeTable()
   // Preload system MOD.
   //
 
-  if (-1 == loadMod("system", sizeof(SYSTEM_MOD), SYSTEM_MOD)) {
+  if (-1 == loadMod("system", sizeof(SYSTEM_M_MOD), SYSTEM_M_MOD)) {
     printf("Preload system.m failed.\n");
     return;
   }
